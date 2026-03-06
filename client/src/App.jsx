@@ -1,6 +1,36 @@
 import React, { useState } from 'react';
 import { auth, provider, signInWithPopup } from './firebase';
 import axios from 'axios';
+// Add these small components ABOVE your main 'App' function
+const CEODashboard = () => (
+  <div style={{ padding: '20px', backgroundColor: '#fff5f5', borderRadius: '10px', border: '2px solid #ff4d4d' }}>
+    <h3>CEO Command Center</h3>
+    <div style={{ display: 'flex', gap: '10px' }}>
+      <div style={{ border: '1px solid #ccc', padding: '10px' }}>📊 Revenue: $2.4M</div>
+      <div style={{ border: '1px solid #ccc', padding: '10px' }}>👥 Headcount: 150</div>
+    </div>
+  </div>
+);
+
+const ManagerPanel = () => (
+  <div style={{ padding: '20px', backgroundColor: '#f5faff', borderRadius: '10px', border: '2px solid #4da3ff' }}>
+    <h3>Manager Operations</h3>
+    <ul>
+      <li>Approve Leave Requests</li>
+      <li>Set Q3 Goals</li>
+      <li>Review Team Performance</li>
+    </ul>
+  </div>
+);
+
+const EmployeeView = () => (
+  <div style={{ padding: '20px', backgroundColor: '#f5fff5', borderRadius: '10px', border: '2px solid #4dff88' }}>
+    <h3>Employee Workspace</h3>
+    <p>Current Task: Fix Login Bug #402</p>
+    <button>Submit Daily Standup</button>
+  </div>
+);
+
 
 function App() {
   const [user, setUser] = useState(null);
@@ -29,39 +59,23 @@ function App() {
     }
   };
 
-  return (
-    <div style={{ textAlign: 'center', marginTop: '50px', fontFamily: 'sans-serif' }}>
-      <h1>Enterprise RBAC Portal</h1>
-      
-      {!user ? (
-        <button onClick={handleLogin} style={{ padding: '10px 20px', fontSize: '16px' }}>
-          Login with Google
-        </button>
-      ) : (
-        <div>
-          <h2>Welcome, {user.displayName}!</h2>
-          <p>Verified Role: <strong>{role || "Fetching Role..."}</strong></p>
-          <hr />
-
-          {/* This part only shows if the Role is CEO */}
-          {role === 'CEO' && (
-            <div style={{ background: '#fff0f0', border: '2px solid red', padding: '20px', margin: '20px' }}>
-              <h3>👑 CEO PRIVATE DASHBOARD</h3>
-              <p>Sensitive Data: Project "Moonshot" Financials</p>
-            </div>
-          )}
-
-          {/* This part only shows if the Role is Employee */}
-          {role === 'Employee' && (
-            <div style={{ background: '#f0f0ff', border: '2px solid blue', padding: '20px', margin: '20px' }}>
-              <h3>🛠 Employee Workspace</h3>
-              <p>Current Task: Submit Weekly Time Report</p>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
+return (
+  <div className="App">
+    {!user ? (
+      <LoginView handleLogin={handleLogin} />
+    ) : (
+      <div>
+        <h1>Enterprise Portal</h1>
+        <p>User: {user.email}</p>
+        {role === 'CEO' && <CEODashboard />}
+        {role === 'Manager' && <ManagerPanel />}
+        {role === 'Employee' && <EmployeeTasklist />}
+        
+        {role === null && <p>Loading permissions...</p>}
+      </div>
+    )}
+  </div>
+);)
 }
 
 export default App;

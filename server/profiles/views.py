@@ -20,7 +20,10 @@ class GetUserRole(APIView):
             try:
                 # 3. Look up the user's role in our Django database
                 profile = Profile.objects.get(firebase_uid=uid)
-                return Response({'role': profile.role})
+                return Response({
+                    "role": profile.role,
+                    "email": profile.user.email if profile.user else "Firebase Account"
+                    })
             except Profile.DoesNotExist:
                 return Response({'role': 'No Role Assigned'}, status=404)
         else:
