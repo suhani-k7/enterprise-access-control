@@ -7,15 +7,36 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.layout-container.light {
+  background-color: #eaf3fb; 
+  color: #1e293b;
+}
+
+.layout-container.dark {
+  background-color: #0b1f3a;
+  color: #e2e8f0;
+}
+
 /* --- Navigation Header --- */
 .app-header {
-  background-color: #694a79;
+  background-color: #464d7b;
   color: white;
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.layout-container.light .app-header {
+  background-color: #13217e;
+}
+
+.layout-container.dark .app-header {
+  background-color: #0f172a;
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
 }
 
 .logo {
@@ -56,18 +77,32 @@ h1{
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 2px 10px rgba(74, 12, 96, 0.1);
+}
+
+.layout-container.light h1 {
+  color: #3f2c50;
+    box-shadow: 0 2px 10px rgba(74, 12, 96, 0.1);
+
+}
+
+.layout-container.dark h1 {
+  color: #e2e8f0;
+    box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
 }
 
 /* --- Cards --- */
-.card {
+/* LIGHT cards */
+.layout-container.light .card {
   background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  border: 1px solid #eee;
-  margin-top: 20px;
+  border: 1px solid #e2e8f0;
 }
+
+/* DARK cards */
+.layout-container.dark .card {
+  background: #1e293b;
+  border: 1px solid #334155;
+}
+
 
 /* --- Footer --- */
 .app-footer {
@@ -78,8 +113,9 @@ h1{
   border-top: 1px solid #dee2e6;
   background-color: white;
 }
-
+ 
 /* --- Buttons --- */
+/* Default */
 .btn-logout {
   background: transparent;
   border: 1px solid white;
@@ -89,14 +125,184 @@ h1{
   cursor: pointer;
   transition: 0.3s;
 }
-.btn-logout:hover {
-  background: white;
-  color: #2c3e50;
+
+/* CEO hover */
+.btn-logout.ceo:hover {
+  background: #e74c3c;
 }
+
+/* Manager hover */
+.btn-logout.manager:hover {
+  background: #3498db;
+}
+
+/* Employee hover */
+.btn-logout.employee:hover {
+  background: #2ecc71;
+}
+
+/* Dark mode slightly brighter */
+.layout-container.dark .btn-logout.ceo:hover {
+  background: #ff6b6b;
+}
+
+.layout-container.dark .btn-logout.manager:hover {
+  background: #60a5fa;
+}
+
+.layout-container.dark .btn-logout.employee:hover {
+  background: #4ade80;
+}
+
 .btn-login {
-  background: #e1c0ec;
+  margin: 20px auto;
+  display: block;
+  background-color : #485160;
+  color:rgb(209, 207, 207);
   padding: 5px 12px;
-  border-radius: 14px;
+  border-radius: 18px;
   cursor: pointer;
   transition: 0.3s;
+  border: 1px solid #374151;
+}
+.btn-login:hover {
+  background-color: #21282f;
+  color: white;
+}
+
+.layout-container.dark .btn-login {
+  background: #434a54;;
+  color:rgb(184, 183, 183);
+}
+
+.layout-container.dark .btn-login:hover{
+  background-color: #5d6775;
+  color: white;
+}
+
+.layout-container.dark .badge-ceo {
+  background-color: #ff6b6b;
+}
+
+.layout-container.dark .badge-manager {
+  background-color: #60a5fa;
+}
+
+.layout-container.dark .badge-employee {
+  background-color: #4ade80;
+}
+
+.layout-container.light .app-footer {
+  background-color: white;
+}
+
+.layout-container.dark .app-footer {
+  background-color: #0f172a;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  
+}
+
+.generate-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin: 20px auto;
+}
+
+.generate-btn:hover {
+  background-color: #e74c3c;
+}
+
+.theme-toggle {
+  font-size: 20px;
+  background: transparent;
+  color: white;
+
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.2);
+}
+
+.dashboard-title.ceo {
+  color: #d32f2f;
+}
+
+.dashboard-title.manager {
+  color: #0056b3;
+}
+
+.dashboard-title.employee {
+  color: #1e7e34;
+}
+
+.layout-container.dark .dashboard-title.ceo {
+  color: #ff6b6b;
+}
+
+.layout-container.dark .dashboard-title.manager {
+  color: #60a5fa;
+}
+
+.layout-container.dark .dashboard-title.employee {
+  color: #4ade80;
+}
+
+.user-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.home-container {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.home-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.home-tagline {
+  text-align: center
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto 20px;
+  opacity: 0.9;
+}
+
+.home-description {
+  text-align: justify
+  max-width: 600px;
+  margin: 0 auto 30px;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.home-features {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.feature-card {
+  background: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  width: 200px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.layout-container.dark .feature-card {
+  background: #1e293b;
 }

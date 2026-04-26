@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from profiles.views import GetUserRole # Make sure this import is here!
+from profiles.views import GetUserRole
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/get-role/', GetUserRole.as_view()), # <--- Check this line for typos!
+    path('api/get-role/', GetUserRole.as_view()), 
 ]

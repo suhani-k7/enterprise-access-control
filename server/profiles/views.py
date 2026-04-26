@@ -11,20 +11,20 @@ class GetUserRole(APIView):
         if not id_token:
             return Response({'error': 'No token provided'}, status=400)
 
-        # 2. Use our Firebase helper to verify the token
+        # 2. Use Firebase helper to verify the token
         decoded_token = verify_firebase_token(id_token)
         
         if decoded_token:
-            uid = decoded_token['uid'] # This is the unique ID from Firebase
+            uid = decoded_token['uid'] # unique ID from Firebase
             
             try:
-                # 3. Look up the user's role in our Django database
+                # 3. Look up the user's role in Django database
                 profile = Profile.objects.get(firebase_uid=uid)
                 return Response({
                     "role": profile.role,
                     "email": profile.user.email if profile.user else "Firebase Account"
                     })
             except Profile.DoesNotExist:
-                return Response({'role': 'No Role Assigned'}, status=404)
+                return Response({'role': 'Employee'})
         else:
             return Response({'error': 'Invalid or expired token'}, status=403)
