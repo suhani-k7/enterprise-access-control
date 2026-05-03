@@ -108,17 +108,18 @@ http://127.0.0.1:8000
 ## Screenshots
 
 ### Login Page
-![Login Page](./screenshots/login.png)
+![Login Page](./screenshots/login1.png)
+
 ![Login Page](./screenshots/login2.png)
 
 ### CEO Dashboard
-![CEO Dashboard](./screenshots/ceo-dashboard.png)
+![CEO Dashboard](./screenshots/ceo-dash.png)
 
 ### Manager Dashboard
-![Manager Dashboard](./screenshots/manager-dashboard.png)
+![Manager Dashboard](./screenshots/manager-dash.png)
 
 ### Employee Dashboard
-![Employee Dashboard](./screenshots/employee-dashboard.png)
+![Employee Dashboard](./screenshots/employee-dash.png)
 
 ---
 
