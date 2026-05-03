@@ -14,5 +14,7 @@ class Profile(models.Model):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='Employee')
 
     def __str__(self):
-        identifier = self.user.email if self.user else f"Firebase User ({self.firebase_uid[:8]}...)"    
-        return f"{self.user.email} - {self.role}"
+        if self.user:
+            return f"{self.user.email} - {self.role}"
+        
+        return f"Firebase User ({self.firebase_uid[:8]}...) - {self.role}"  

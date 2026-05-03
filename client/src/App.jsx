@@ -1,26 +1,27 @@
-import React, { useState } from 'react';
-import { auth, provider, signInWithPopup } from './firebase';
-import axios from 'axios';
-import './App.css';
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebase";
+import axios from "axios";
+import "./App.css";
 
 // --- CEO DASHBOARD ---
 const CEODashboard = () => (
   <div
     style={{
-      padding: '30px',
-      borderRadius: '15px',
-      border: '2px solid #ff4d4d',
-      marginTop: '20px'
+      padding: "30px",
+      borderRadius: "15px",
+      border: "2px solid #ff4d4d",
+      marginTop: "20px",
     }}
   >
     <h2 className="dashboard-title ceo">CEO View</h2>
 
     <div
       style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr 1fr',
-        gap: '20px',
-        marginTop: '20px'
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr",
+        gap: "20px",
+        marginTop: "20px",
       }}
     >
       <div className="card" style={cardStyle}>
@@ -41,7 +42,7 @@ const CEODashboard = () => (
 
     <button
       className="generate-btn"
-      style={{ marginTop: '20px', padding: '10px', cursor: 'pointer' }}
+      style={{ marginTop: "20px", padding: "10px", cursor: "pointer" }}
     >
       Generate Annual Report
     </button>
@@ -52,20 +53,20 @@ const CEODashboard = () => (
 const ManagerPanel = () => (
   <div
     style={{
-      padding: '30px',
-      borderRadius: '15px',
-      border: '2px solid #007bff',
-      marginTop: '20px'
+      padding: "30px",
+      borderRadius: "15px",
+      border: "2px solid #007bff",
+      marginTop: "20px",
     }}
   >
     <h2 className="dashboard-title manager">Manager View</h2>
 
     <div
       style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: '20px',
-        marginTop: '20px'
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: "20px",
+        marginTop: "20px",
       }}
     >
       <div className="card" style={cardStyle}>
@@ -79,7 +80,7 @@ const ManagerPanel = () => (
       </div>
     </div>
 
-    <div style={{ textAlign: 'left', marginTop: '20px' }}>
+    <div style={{ textAlign: "left", marginTop: "20px" }}>
       <h4>Current Projects:</h4>
       <ul>
         <li>Project Alpha (Due: Friday)</li>
@@ -93,46 +94,37 @@ const ManagerPanel = () => (
 const EmployeeView = () => (
   <div
     style={{
-      padding: '30px',
-      borderRadius: '15px',
-      border: '2px solid #28a745',
-      marginTop: '20px'
+      padding: "30px",
+      borderRadius: "15px",
+      border: "2px solid #28a745",
+      marginTop: "20px",
     }}
   >
     <h2 className="dashboard-title employee">Employee View</h2>
 
-    <div style={{ textAlign: 'left' }}>
+    <div style={{ textAlign: "left" }}>
       <h4>My Daily Tasks:</h4>
 
-      <div
-        className="card"
-        style={{ ...cardStyle, marginBottom: '10px' }}
-      >
+      <div className="card" style={{ ...cardStyle, marginBottom: "10px" }}>
         ✅ Update documentation for API
       </div>
 
-      <div
-        className="card"
-        style={{ ...cardStyle, marginBottom: '10px' }}
-      >
+      <div className="card" style={{ ...cardStyle, marginBottom: "10px" }}>
         ⬜️ Sync with lead developer at 3PM
       </div>
 
-      <div
-        className="card"
-        style={{ ...cardStyle, marginBottom: '10px' }}
-      >
+      <div className="card" style={{ ...cardStyle, marginBottom: "10px" }}>
         ⬜️ Finalize CSS for Dashboard
       </div>
     </div>
 
     <button
       style={{
-        backgroundColor: '#28a745',
-        color: 'white',
-        border: 'none',
-        padding: '10px 20px',
-        borderRadius: '5px'
+        backgroundColor: "#28a745",
+        color: "white",
+        border: "none",
+        padding: "10px 20px",
+        borderRadius: "5px",
       }}
     >
       Submit Daily Report
@@ -142,43 +134,41 @@ const EmployeeView = () => (
 
 // Shared Style for Cards
 const cardStyle = {
-  padding: '15px',
-  borderRadius: '8px',
-  boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-  border: '1px solid #eee'
+  padding: "15px",
+  borderRadius: "8px",
+  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+  border: "1px solid #eee",
 };
 
 function App() {
-  const [mode, setMode] = useState(
-    localStorage.getItem('theme') || 'light'
-  );
+  const [mode, setMode] = useState(localStorage.getItem("theme") || "light");
   const [user, setUser] = useState(null);
   const [role, setRole] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const toggleTheme = () => {
-    const newMode = mode === 'dark' ? 'light' : 'dark';
+    const newMode = mode === "dark" ? "light" : "dark";
     setMode(newMode);
-    localStorage.setItem('theme', newMode);
+    localStorage.setItem("theme", newMode);
   };
 
   const handleLogin = async () => {
     try {
-      const result = await signInWithPopup(auth, provider);
-      setUser(result.user);
+      const result = await signInWithEmailAndPassword(auth, email, password);
 
-      console.log(result.user.uid);
+      setUser(result.user);
 
       const token = await result.user.getIdToken();
 
-      const response = await axios.post(
-        'http://127.0.0.1:8000/api/get-role/',
-        { token: token }
-      );
+      const response = await axios.post("http://127.0.0.1:8000/api/get-role/", {
+        token: token,
+      });
 
       setRole(response.data.role);
     } catch (error) {
-      console.error('Login or Role Check failed:', error);
-      alert('Check the console - Django might be blocked!');
+      console.error(error);
+      alert("Login failed");
     }
   };
 
@@ -189,7 +179,7 @@ function App() {
 
         <div className="user-nav">
           <button className="theme-toggle" onClick={toggleTheme}>
-            {mode === 'dark' ? (
+            {mode === "dark" ? (
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                 <circle
                   cx="12"
@@ -199,17 +189,81 @@ function App() {
                   strokeWidth="2"
                 />
 
-                <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <line
+                  x1="12"
+                  y1="1"
+                  x2="12"
+                  y2="3"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1="12"
+                  y1="21"
+                  x2="12"
+                  y2="23"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
 
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <line
+                  x1="4.22"
+                  y1="4.22"
+                  x2="5.64"
+                  y2="5.64"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1="18.36"
+                  y1="18.36"
+                  x2="19.78"
+                  y2="19.78"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
 
-                <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <line
+                  x1="1"
+                  y1="12"
+                  x2="3"
+                  y2="12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1="21"
+                  y1="12"
+                  x2="23"
+                  y2="12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
 
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <line
+                  x1="4.22"
+                  y1="19.78"
+                  x2="5.64"
+                  y2="18.36"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1="18.36"
+                  y1="5.64"
+                  x2="19.78"
+                  y2="4.22"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
               </svg>
             ) : (
               <svg width="22" height="22" viewBox="0 0 24 24">
@@ -228,14 +282,14 @@ function App() {
 
               <span
                 className={`badge ${
-                  role === 'CEO'
-                    ? 'badge-ceo'
-                    : role === 'Manager'
-                    ? 'badge-manager'
-                    : 'badge-employee'
+                  role === "CEO"
+                    ? "badge-ceo"
+                    : role === "Manager"
+                      ? "badge-manager"
+                      : "badge-employee"
                 }`}
               >
-                {role || 'Loading...'}
+                {role || "Loading..."}
               </span>
 
               <button
@@ -255,19 +309,22 @@ function App() {
             <h1>Enterprise Access Portal</h1>
 
             <p className="home-tagline">
-              Secure. Scalable. Role-Based Access Control for modern organizations.
+              Secure. Scalable. Role-Based Access Control for modern
+              organizations.
             </p>
 
             <p className="home-description">
-              This platform demonstrates a full-stack RBAC system powered by Firebase Authentication and a Django backend.
-              Users are authenticated securely and dynamically assigned roles such as CEO, Manager, or Employee,
-              each with a personalized dashboard experience.
+              This platform demonstrates a full-stack RBAC system powered by
+              Firebase Authentication and a Django backend. Users are
+              authenticated securely and dynamically assigned roles such as CEO,
+              Manager, or Employee, each with a personalized dashboard
+              experience.
             </p>
 
             <div className="home-features">
               <div className="feature-card">
                 <strong>Secure Login</strong>
-                <p>Google authentication via Firebase</p>
+                <p>Authentication via Firebase</p>
               </div>
 
               <div className="feature-card">
@@ -280,16 +337,33 @@ function App() {
                 <p>Custom dashboards based on user roles</p>
               </div>
             </div>
+            <div className="login-card">
+              <input
+                type="email"
+                placeholder="Enter Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="login-input"
+              />
 
-            <button className="btn-login" onClick={handleLogin}>
-              Get Started with Google
-            </button>
+              <input
+                type="password"
+                placeholder="Enter Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="login-input"
+              />
+
+              <button className="btn-login" onClick={handleLogin}>
+                Get Started
+              </button>
+            </div>
           </div>
         ) : (
           <div className="dashboard-container">
-            {role === 'CEO' && <CEODashboard />}
-            {role === 'Manager' && <ManagerPanel />}
-            {role === 'Employee' && <EmployeeView />}
+            {role === "CEO" && <CEODashboard />}
+            {role === "Manager" && <ManagerPanel />}
+            {role === "Employee" && <EmployeeView />}
           </div>
         )}
       </main>
