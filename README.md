@@ -27,7 +27,7 @@ Authentication:
 - Firebase Authentication
 
 Database:
-- Firebase / Firestore
+- SQLite
 
 ---
 
@@ -82,8 +82,9 @@ http://127.0.0.1:8000
 
 1. Create a Firebase project
 2. Enable Email/Password Authentication
-3. Add Firebase config in: client/src/firebase.js
-4. Add Firebase Admin SDK credentials in backend.
+3. Add Firebase config in:
+   `client/src/firebase.js`
+4. Add Firebase Admin SDK credentials (`serviceAccountKey.json`) in the backend for token verification.
 
 ---
 
